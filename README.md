@@ -2,7 +2,7 @@
 This project is yet another implementation of a vagrant/virtualbox/ubuntu/drupal envirionment. Ubuntu version is Ubuntu 14.04 LTS Trusty Tahr.
 
 It is implemented, so that you can choose to do the installation of Ubuntu packages and Drupal
-in step 7 below manually, which is usefull if you want to change some settings.
+in step 8 below manually, which is usefull if you want to change some settings.
 
 To run you need a computer with Vagrant and Virtualbox installed, I have used a MacBook Pro with OS X Yosemite. 
 
