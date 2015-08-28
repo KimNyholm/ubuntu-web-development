@@ -27,7 +27,7 @@ Tell your host about the ip address of the guest virtual machine, by adding the 
 Install Ubuntu packages and Drupal<br>
 <code>/vagrant/trusty-all.ssh</code>
 
-Wait, and when installation is done in about 10 minutes, browse to http://ubuntu.dev. You are now able to work with
+Wait, and when installation is done in about 10 minutes. On your host browse to http://ubuntu.dev. You are now able to work with
 4 different Drupal versions.
 
 - Recommended Drupal 7 stable release, http://ubuntu.dev/drupal-7
