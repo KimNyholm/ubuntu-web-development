@@ -25,7 +25,7 @@ Tell your host about the ip address of the guest virtual machine, by adding the 
 <code>vagrant ssh</code>
 8. You are now in the guest shell.<br>
 Install Ubuntu packages and Drupal<br>
-<code>/vagrant/trusty-all.ssh</code>
+<code>/vagrant/trusty-all.ssh</code><br>
 If you want to modify the setup according to your own needs, look into the script and modify.
 
 Wait until installation is done (approximately 10 minutes). On your host browse to http://ubuntu.dev. You are now able to work with 4 different Drupal versions and the latest Wordpress release
