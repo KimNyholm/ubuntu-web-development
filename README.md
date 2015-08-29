@@ -1,8 +1,8 @@
 # ubuntu-web-development
-This project is yet another implementation of a vagrant/virtualbox/ubuntu/drupal envirionment. Ubuntu version is Ubuntu 14.04 LTS Trusty Tahr.
+This project is yet another implementation of a vagrant/virtualbox/ubuntu/drupal/wordpress envirionment. Ubuntu version is Ubuntu 14.04 LTS Trusty Tahr.
 
-It is implemented, so that you can choose to do the installation of Ubuntu packages and Drupal
-in step 8 below manually, which is usefull if you want to change some settings.
+It is implemented, so that you can choose to do the installation of Ubuntu packages, Drupal and Wordpress
+in step 8 below manually, which is usefull if you want to adapt the setup to some specific needs.
 
 To run you need a computer with Vagrant and Virtualbox installed, I have used a MacBook Pro with OS X Yosemite. 
 
@@ -26,14 +26,14 @@ Tell your host about the ip address of the guest virtual machine, by adding the 
 8. You are now in the guest shell.<br>
 Install Ubuntu packages and Drupal<br>
 <code>/vagrant/trusty-all.ssh</code>
+If you want to modify the setup according to your own needs, look into the script and modify.
 
-Wait until installation is done (approximately 10 minutes). On your host browse to http://ubuntu.dev. You are now able to work with
-4 different Drupal versions.
+Wait until installation is done (approximately 10 minutes). On your host browse to http://ubuntu.dev. You are now able to work with 4 different Drupal versions and the latest Wordpress release
 
 - Recommended Drupal 7 stable release, http://ubuntu.dev/drupal-7
 - Development Drupal 7 current release, http://ubuntu.dev/drupal-7.x
 - Recommended Drupal 8 stable release, http://ubuntu.dev/drupal-8
 - Development Drupal 8 current release, http://ubuntu.dev/drupal-8.0.x
+- Wordpress, latest release, http://ubuntu.dev/wordpress
 
 More documentation can be found at http://kimnyholm.com.
-
