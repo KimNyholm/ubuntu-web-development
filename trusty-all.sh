@@ -1,6 +1,8 @@
 #!/bin/bash
-set -o verbose
-cd /vagrant
+pushd /vagrant
 ./trusty-init.sh
 ./install-drush.sh
 ./drupalget.sh
+./install-wordpress.sh
+popd
+
