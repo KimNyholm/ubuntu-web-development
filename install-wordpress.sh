@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -o verbose
-
 #prepare database for Wordpress
 mysql -u root -pLovelace <<CREATE
 create database wordpress;
