@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #configure vim
-sudo tee ~/.vimrc <<CONFIG
+tee ~/.vimrc <<CONFIG
 set number
 match ErrorMsg '\s\+$\|\t'
 set expandtab
