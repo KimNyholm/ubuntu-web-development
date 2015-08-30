@@ -24,7 +24,7 @@ Tell your host about the ip address of the guest virtual machine, by adding the 
 7. Make a ssh connection to the virtual machine<br>
 <code>vagrant ssh</code>
 8. You are now in the guest shell.<br>
-Install Ubuntu packages and Drupal<br>
+Install Ubuntu packages, Drupal and Wordpress<br>
 <code>/vagrant/trusty-all.ssh</code><br>
 If you want to modify the setup according to your own needs, look into the script and modify.
 
