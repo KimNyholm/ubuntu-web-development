@@ -12,3 +12,5 @@ pushd /vagrant
 ./install-wordpress.sh
 popd
 
+echo Installation complete. On your host browse to http://ubuntu.dev
+
