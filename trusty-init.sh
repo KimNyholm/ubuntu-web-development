@@ -25,6 +25,9 @@ sudo apt-get --yes install nodejs npm
 #Install LAMP stack and phpmyadmin.
 $SHELL_PATH/install-apache2.sh
 
+#install postfix mail
+$SHELL_PATH/install-postfix.sh
+
 #Install Xdebug.
 $SHELL_PATH/install-xdebug.sh
 
@@ -33,4 +36,3 @@ $SHELL_PATH/install-xhprof.sh
 
 #Restart apache.
 sudo service apache2 restart
-

@@ -4,7 +4,8 @@ function getParameter($parameter){
 }
 $to=getParameter('to');
 if (empty($to)){
-  echo 'To call: http://host/testmail.php?to=mail@domain&subject=header&message=body';
+  echo 'To call: http://host/testmail.php?to=mail@domain&subject=header&message=body<br>';
+  echo 'Replace mail@domain, header and body with your values.<br>';
 } else {
   $subject=getParameter('subject');
   $message=getParameter('message');
