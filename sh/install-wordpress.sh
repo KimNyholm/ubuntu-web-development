@@ -13,5 +13,5 @@ wget http://wordpress.org/latest.tar.gz
 tar zxvf latest.tar.gz
 mkdir wordpress/wp-content/uploads
 popd
-cp php/wp-config.php /var/www/html/wordpress/wp-config.php
+cp ../php/wp-config.php /var/www/html/wordpress/wp-config.php
 sudo chown -R :www-data /var/www/html/wordpress
