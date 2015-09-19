@@ -23,7 +23,7 @@ sudo cp /tmp/php.ini /etc/php5/apache2/php.ini
 #Preprare html directory for use with some test files.
 sudo chmod 777 /var/www/html
 cp ../php/phpinfo.php /var/www/html
-cp php/index.html /var/www/html
+sudo cp ../index.html /var/www/html
 
 #Enable rewrites.
 sudo a2enmod rewrite

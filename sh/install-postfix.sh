@@ -11,4 +11,4 @@ sudo debconf-set-selections <<< 'dovecot-core dovecot-core/create-ssl-cert boole
 sudo apt-get --yes install mail-stack-delivery
 
 #Small example of php web page sending mail.
-cp php/testmail.php /var/www/html/
+cp ../php/testmail.php /var/www/html/
