@@ -17,3 +17,6 @@ CONFIG
 sudo chown -R :www-data /var/www/html/xhprof
 sudo chmod -R 777 /var/www/html/xhprof
 sudo php5enmod xhprof
+
+#Test file to check for xhprof.
+cp ../php/xhproftest.php /var/www/html

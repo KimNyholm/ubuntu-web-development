@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SHELL_PATH="`dirname \"$0\"`"
-
 #Install LAMP stack, we set Lovelace as root password.
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password Lovelace'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password Lovelace'
@@ -24,10 +22,8 @@ sudo cp /tmp/php.ini /etc/php5/apache2/php.ini
 
 #Preprare html directory for use with some test files.
 sudo chmod 777 /var/www/html
-cp $SHELL_PATH/phpinfo.php /var/www/html
-cp $SHELL_PATH/xhproftest.php /var/www/html
-sudo cp $SHELL_PATH/index.html /var/www/html
-cp $SHELL_PATH/performance.php /var/www/html
+cp ../php/phpinfo.php /var/www/html
+cp php/index.html /var/www/html
 
 #Enable rewrites.
 sudo a2enmod rewrite

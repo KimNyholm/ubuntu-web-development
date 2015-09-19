@@ -9,3 +9,6 @@ xdebug.max_nesting_level=300
 xdebug.remote_connect_back=1
 zend_extension=xdebug.so
 CONFIG
+
+#Test file to show performance of php.
+cp ../php/performance.php /var/www/html
