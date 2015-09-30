@@ -7,4 +7,5 @@ match ErrorMsg '\s\+$\|\t'
 set expandtab
 set tabstop=2
 set shiftwidth=2
+set fileformats=unix
 CONFIG
