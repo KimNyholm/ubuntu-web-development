@@ -10,6 +10,7 @@ sudo apt-get update
 #Install zip and git.
 sudo apt-get --yes install p7zip-full
 sudo apt-get --yes install git
+git config --global core.autocrlf input
 
 #Install vim.
 ./install-vim.sh
