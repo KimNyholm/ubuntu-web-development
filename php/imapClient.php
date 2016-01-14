@@ -13,7 +13,6 @@ if (empty($host) || empty($user) || empty($pw)){
 
 function EmailConnect($host, $user, $password){
   $hostName = '{'.$host.':143/novalidate-cert}INBOX';
-  //$hostName = "{$host:143/novalidate-cert}INBOX";
   $inbox = imap_open($hostName,$user,$password) ;
   return $inbox;
 }
@@ -77,7 +76,7 @@ function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
     'plainText'   => $result['plainText'] . $plainText,
     'htmlText'    => $result['htmlText'] . $htmlText,
   );
-  if (isset($part->pargs)){
+  if (isset($part->parts)){
     $result = EmailGetParts($inbox,$emailNumber, $part->parts, $partNo, $result);
   }
   return $result;
