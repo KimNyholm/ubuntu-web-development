@@ -144,17 +144,18 @@ function EmailAttachmentsSave($mail){
 
 function EmailPrint($mail){
   $headerInfo=$mail['headerInfo'];
-  $html = '<h4>' . $headerInfo->subject . '</h4>';
-  $html .= '<p>' . $headerInfo->fromaddress . '</p>';
-  $html .= '<p>' . $headerInfo->toaddress. '</p>';
-  $html .= empty($mail['htmlText']) ? ('<p>' . $mail['plainText'] . '</p>') : $mail['htmlText'] ;
+  $html = '<h4>' . htmlentities($headerInfo->subject) . '</h4>';
+  $html .= '<p>From: ' . htmlentities($headerInfo->fromaddress) . '</p>';
+  $html .= '<p>To: ' . htmlentities($headerInfo->toaddress) . '</p>';
+  $html .= '<div style="background: lightgrey">' . (empty($mail['htmlText']) ? ('<p>' . $mail['plainText'] . '</p>') : $mail['htmlText']) . '</div>';
   return $html ;
 }
 
 function EmailDownload($host, $user, $password){
   $html = '<h3>Simple imap client</h3>';
-  $html .= "<p>Connecting to host $host with user $user.</p>";
   $mails=EmailGetAll($host, $user, $password);
+  $count=count($mails);
+  $html .= "<p>$user has $count mails at $host.</p>";
   foreach ($mails as $mail){
       $html .= '<hr>';
       $html .= EmailAttachmentsSave($mail);
