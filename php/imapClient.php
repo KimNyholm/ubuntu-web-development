@@ -11,6 +11,14 @@ if (empty($host) || empty($user) || empty($pw)){
     echo EmailDownload($host, 'ldb-cms@kimnyholm.com', 'kny903kny903');
   }
 
+function EmailEmbeddedLinkReplace($html, $cid, $link)
+{
+  // In $html locate src="cid:$cid" and replace with $link.
+  $cid='cid:'.substr($cid, 1, strlen($cid)-2);
+  $newHtml = str_replace($cid, $link, $html);
+  return $newHtml;
+}
+
 function EmailConnect($host, $user, $password){
   $hostName = '{'.$host.':143/novalidate-cert}INBOX';
   $inbox = imap_open($hostName,$user,$password) ;
@@ -122,7 +130,7 @@ function EmailGetAll($host,$user, $password){
   return $mails;
 }
 
-function EmailAttachmentsSave($mail){
+function EmailAttachmentsSave(&$mail){
   $html = '';
   $attachments=$mail['attachments'];
   foreach ($attachments as $attachment) {
@@ -137,6 +145,10 @@ function EmailAttachmentsSave($mail){
     $tmpName = "$tmpDir/$fileName";
     $saved = $dirExists && file_put_contents($tmpName, $attachment['data']);
     $html .= '<span><a href="' . $tmpName . '">' . $fileName . '</a> </span>';
+    $cid =$attachment['id'];
+    if (isset($cid)){
+      $mail['htmlText']=EmailEmbeddedLinkReplace($mail['htmlText'],$cid,$tmpName);
+    }
   }
   return $html ;
 }
