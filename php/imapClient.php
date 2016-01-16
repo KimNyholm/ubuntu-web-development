@@ -6,7 +6,7 @@ $pw=empty($_GET['pw']) ?'' : $_GET['pw'];
 
 if (empty($host) || empty($user) || empty($pw)){
   echo '<p>To get mail, specify parameters (host, username and password) in url as ' . $_SERVER['REQUEST_URI']. '?=host=hostname&user=username&pw=password</p>';
-  echo '<p>Example: ' . $_SERVER['REQUEST_URI']. '?host=mail.mydomain.com&&user=name@mydomain.com&pw=1234567</p>';
+  echo '<p>Example: ' . $_SERVER['REQUEST_URI']. '?host=mail.mydomain.com&user=name@mydomain.com&pw=1234567</p>';
   } else {
     echo EmailDownload($host, 'ldb-cms@kimnyholm.com', 'kny903kny903');
   }
