@@ -35,9 +35,9 @@ function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
   $data = imap_fetchbody($inbox,$emailNumber,$partNo);
   // Any part may be encoded, even plain text messages, so check everything.
   $encoding = $part->encoding ;
-  if ($encoding==4){
+  if ($encoding==ENCQUOTEDPRINTABLE){
       $data = quoted_printable_decode($data);
-  } elseif ($encoding==3) {
+  } elseif ($encoding==ENCBASE64) {
       $data = base64_decode($data);
   }
   // PARAMETERS
@@ -61,7 +61,7 @@ function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
     $attachments[] = array('filename' => $filename, 'part' => $partNo, 'data' => $data, 'id' => $id);
   }
    // TEXT
-  if ($part->type==0 && $data) {
+  if ($part->type==TYPETEXT && $data) {
     // Messages may be split in different parts because of inline attachments,
     // so append parts together with blank row.
     if (strtolower($part->subtype)=='plain') {
@@ -70,20 +70,18 @@ function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
         $htmlText.= $data ."<br><br>";
     }
     $charset = $parameter['charset'];  // assume all parts are same charset
-  } elseif ($part->type==2 && $data) {
+  } elseif ($part->type==TYPEMESSAGE && $data) {
     // EMBEDDED MESSAGE
     // Many bounce notifications embed the original message as type 2,
     // but AOL uses type 1 (multipart), which is not handled here.
     // There are no PHP functions to parse embedded messages,
     // so this just appends the raw source to the main message.
-        $plainmsg.= $data."\n\n";
+        $plainText .= $data."\n\n";
   }
   // SUBPART RECURSION
-  $result = array (
-    'attachments' => array_merge($result['attachments'], $attachments),
-    'plainText'   => $result['plainText'] . $plainText,
-    'htmlText'    => $result['htmlText'] . $htmlText,
-  );
+  $result->attachments = array_merge($result->attachments, $attachments);
+  $result->plainText   = $result->plainText . $plainText;
+  $result->htmlText    = $result->htmlText . $htmlText;
   if (isset($part->parts)){
     $result = EmailGetParts($inbox,$emailNumber, $part->parts, $partNo, $result);
   }
@@ -100,16 +98,15 @@ function EmailGetParts($inbox, $emailNumber, $parts, $partNo, $result){
 
 function EmailGetOne($inbox, $email_number){
   $structure = imap_fetchstructure($inbox,$email_number);
-  $mail = array (
-    'attachments' => array(),
-    'plainText'   => '',
-    'htmlText'    => '',
-  );
+  $mail = new stdClass();
+  $mail->attachments = array();
+  $mail->plainText = '';
+  $mail->htmlText  = '';
   if(isset($structure->parts)){
     $mail = EmailGetParts($inbox, $email_number, $structure->parts, 0, $mail);
   }
   $headerInfo= imap_headerinfo($inbox,$email_number,0);
-  $mail['headerInfo']=$headerInfo;
+  $mail->headerInfo=$headerInfo;
   return $mail;
 }
 
@@ -132,9 +129,9 @@ function EmailGetAll($host,$user, $password){
 
 function EmailAttachmentsSave(&$mail){
   $html = '';
-  $attachments=$mail['attachments'];
+  $attachments=$mail->attachments;
+  $msgNo=trim($mail->headerInfo->Msgno);
   foreach ($attachments as $attachment) {
-    $msgNo=trim($mail['headerInfo']->Msgno);
     $partNo=$attachment['part'];
     $tmpDir= "imapClient/$msgNo/$partNo";
     $dirExists= is_dir($tmpDir);
@@ -147,18 +144,18 @@ function EmailAttachmentsSave(&$mail){
     $html .= '<span><a href="' . $tmpName . '">' . $fileName . '</a> </span>';
     $cid =$attachment['id'];
     if (isset($cid)){
-      $mail['htmlText']=EmailEmbeddedLinkReplace($mail['htmlText'],$cid,$tmpName);
+      $mail->htmlText=EmailEmbeddedLinkReplace($mail->htmlText,$cid,$tmpName);
     }
   }
   return $html ;
 }
 
 function EmailPrint($mail){
-  $headerInfo=$mail['headerInfo'];
+  $headerInfo=$mail->headerInfo;
   $html = '<h4>' . htmlentities($headerInfo->subject) . '</h4>';
   $html .= '<p>From: ' . htmlentities($headerInfo->fromaddress) . '</p>';
   $html .= '<p>To: ' . htmlentities($headerInfo->toaddress) . '</p>';
-  $html .= '<div style="background: lightgrey">' . (empty($mail['htmlText']) ? ('<p>' . $mail['plainText'] . '</p>') : $mail['htmlText']) . '</div>';
+  $html .= '<div style="background: lightgrey">' . (empty($mail->htmlText) ? ('<p>' . $mail->plainText . '</p>') : $mail->htmlText) . '</div>';
   return $html ;
 }
 
