@@ -26,13 +26,13 @@ function EmailConnect($host, $user, $password){
 }
 
 // Based upon http://php.net/manual/en/function.imap-fetchstructure.php.
-function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
+function EmailGetPart($mailbox, $emailNumber, $part, $partNo, $result){
   $parameter = array();
   $attachments = array();
   $plainText = '';
   $htmlText = '';
   // GET DATA
-  $data = imap_fetchbody($inbox,$emailNumber,$partNo);
+  $data = ($partNo) ? imap_fetchbody($mailbox,$emailNumber,$partNo) : imap_body($mailbox, $emailNumber);
   // Any part may be encoded, even plain text messages, so check everything.
   $encoding = $part->encoding ;
   if ($encoding==ENCQUOTEDPRINTABLE){
@@ -57,7 +57,8 @@ function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
   // so an attached text file (type 0) is not mistaken as the message.
   if(isset($parameter['filename']) || isset($parameter['name'])) {
     $filename = ($parameter['filename'])? $parameter['filename'] : $parameter['name'];
-    $id = isset($part->id) ? $part->id : '';
+    $filename=iconv_mime_decode($filename, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF8');
+    $id = isset($part->id) ? $part->id : '' ;
     $attachments[] = array('filename' => $filename, 'part' => $partNo, 'data' => $data, 'id' => $id);
   }
    // TEXT
@@ -69,60 +70,86 @@ function EmailGetPart($inbox, $emailNumber, $part, $partNo, $result){
     } else {
         $htmlText.= $data ."<br><br>";
     }
-    $charset = $parameter['charset'];  // assume all parts are same charset
+    // assume all parts are same charset
+    $result->charset = $parameter['charset'];
   } elseif ($part->type==TYPEMESSAGE && $data) {
     // EMBEDDED MESSAGE
     // Many bounce notifications embed the original message as type 2,
     // but AOL uses type 1 (multipart), which is not handled here.
     // There are no PHP functions to parse embedded messages,
     // so this just appends the raw source to the main message.
-        $plainText .= $data."\n\n";
+        $plainmsg.= $data."\n\n";
   }
   // SUBPART RECURSION
   $result->attachments = array_merge($result->attachments, $attachments);
   $result->plainText   = $result->plainText . $plainText;
   $result->htmlText    = $result->htmlText . $htmlText;
   if (isset($part->parts)){
-    $result = EmailGetParts($inbox,$emailNumber, $part->parts, $partNo, $result);
+    $result = EmailGetParts($mailbox,$emailNumber, $part->parts, $partNo, $result);
   }
   return $result;
 }
 
-function EmailGetParts($inbox, $emailNumber, $parts, $partNo, $result){
-  foreach ($parts as $partIx=>$subPart){
-    $subPartNo = empty($partNo) ? ($partIx+1) : $partNo . '.' . ($partIx+1);
-    $result = EmailGetPart($inbox,$emailNumber, $subPart, $subPartNo, $result);
+function EmailGetParts($mailbox, $emailNumber, $parts, $partNo, $result){
+  if (isset($parts) && count($parts)) {
+    foreach ($parts as $partIx=>$subPart){
+      $subPartNo = empty($partNo) ? ($partIx+1) : $partNo . '.' . ($partIx+1);
+      $result = EmailGetPart($mailbox,$emailNumber, $subPart, $subPartNo, $result);
+    }
   }
   return $result ;
 }
 
-function EmailGetOne($inbox, $email_number){
-  $structure = imap_fetchstructure($inbox,$email_number);
+function DecodeMailHeader($headerInfo, $fieldName){
+  $value='';
+  if (isset($headerInfo->$fieldName)){
+    $value=iconv_mime_decode($headerInfo->$fieldName, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF8');
+  }
+  return $value ;
+}
+
+function EmailGetOne($mailbox, $email_number){
+  $structure = imap_fetchstructure($mailbox,$email_number);
   $mail = new stdClass();
   $mail->attachments = array();
-  $mail->plainText = '';
-  $mail->htmlText  = '';
-  if(isset($structure->parts)){
-    $mail = EmailGetParts($inbox, $email_number, $structure->parts, 0, $mail);
+  $mail->plainText   = '';
+  $mail->htmlText    = '';
+  $mail->charset     = 'auto';
+  if (empty($tructure->parts)){
+    // Simple message.
+    $mail = EmailGetPart($mailbox, $email_number, $structure, 0, $mail);
+  } else {
+    // Multipart message.
+    $mail = EmailGetParts($mailbox, $email_number, $structure->parts, 0, $mail);
   }
-  $headerInfo= imap_headerinfo($inbox,$email_number,0);
+  $headerInfo= imap_headerinfo($mailbox,$email_number,0);
+  $headerInfo->fromaddress = DecodeMailHeader($headerInfo, 'fromaddress') ;
+  $headerInfo->toaddress = DecodeMailHeader($headerInfo, 'toaddress') ;
+  $headerInfo->ccaddress = DecodeMailHeader($headerInfo, 'ccaddress') ;
+  $headerInfo->subject = DecodeMailHeader($headerInfo, 'subject') ;
   $mail->headerInfo=$headerInfo;
+
+  $mail->plainText = iconv($mail->charset, 'UTF8', $mail->plainText);
+  $mail->htmlText  = iconv($mail->charset, 'UTF8', $mail->htmlText);
+  if (empty($mail->htmlText)){
+    $mail->htmlText='<p>'.$mail->plainText.'</p>';
+  }
   return $mail;
 }
 
-function EmailGetAll($host,$user, $password){
-  $inbox = EmailConnect($host, $user, $password);
+function EmailGetMany($host, $user, $password){
+  $mailbox = EmailConnect($host, $user, $password);
   $mails=array();
-  if (!empty($inbox)){
-    $emails = imap_search($inbox, 'ALL');
+  if (!empty($mailbox)){
+    $emails = imap_search($mailbox, 'ALL');
     if($emails) {
       /* put the newest emails on top */
       rsort($emails);
       foreach($emails as $email_number) {
-        $mails[]=EmailGetOne($inbox, $email_number);
+        $mails[]=EmailGetOne($mailbox, $email_number);
       }
     }
-    imap_close($inbox);
+    imap_close($mailbox);
   }
   return $mails;
 }
@@ -138,7 +165,7 @@ function EmailAttachmentsSave(&$mail){
     if (!$dirExists){
       $dirExists= mkdir($tmpDir, 0777, true) ;
     }
-    $fileName=$attachment['filename'];
+    $fileName=htmlentities($attachment['filename']);
     $tmpName = "$tmpDir/$fileName";
     $saved = $dirExists && file_put_contents($tmpName, $attachment['data']);
     $html .= '<span><a href="' . $tmpName . '">' . $fileName . '</a> </span>';
@@ -160,8 +187,9 @@ function EmailPrint($mail){
 }
 
 function EmailDownload($host, $user, $password){
-  $html = '<h3>Simple imap client</h3>';
-  $mails=EmailGetAll($host, $user, $password);
+  $html = '<head> <meta charset="UTF-8"> </head>';
+  $html .= '<h3>Simple imap client</h3>';
+  $mails=EmailGetMany($host, $user, $password);
   $count=count($mails);
   $html .= "<p>$user has $count mails at $host.</p>";
   foreach ($mails as $mail){
