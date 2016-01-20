@@ -165,9 +165,11 @@ function EmailAttachmentsSave(&$mail){
     if (!$dirExists){
       $dirExists= mkdir($tmpDir, 0777, true) ;
     }
-    $fileName=htmlentities($attachment['filename']);
+    $fileName=$attachment['filename'];
     $tmpName = "$tmpDir/$fileName";
     $saved = $dirExists && file_put_contents($tmpName, $attachment['data']);
+    $tmpName=htmlentities($tmpName);
+    $fileName=htmlentities($fileName);
     $html .= '<span><a href="' . $tmpName . '">' . $fileName . '</a> </span>';
     $cid =$attachment['id'];
     if (isset($cid)){
