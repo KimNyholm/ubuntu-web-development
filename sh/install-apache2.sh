@@ -22,8 +22,13 @@ sudo cp /tmp/php.ini /etc/php5/apache2/php.ini
 
 #Preprare html directory for use with some test files.
 sudo chmod 777 /var/www/html
-cp ../php/phpinfo.php /var/www/html
-sudo cp ../index.html /var/www/html
+cp ../php/imapClient.php /var/www/html
+cp ../php/phpinfo.php    /var/www/html
+sudo cp ../index.html    /var/www/html
+
+#Install php imap extensions.
+sudo apt-get --yes install php5-imap
+sudo php5enmod imap
 
 #Enable rewrites.
 sudo a2enmod rewrite
