@@ -4,7 +4,7 @@ This project is yet another implementation of a vagrant/virtualbox/ubuntu/drupal
 It is implemented, so that you can choose to do the installation of Ubuntu packages, Drupal and Wordpress
 in step 8 below manually, which is usefull if you want to adapt the setup to some specific needs.
 
-To run you need a computer with Vagrant and Virtualbox installed, I have used a MacBook Pro with OS X Yosemite. 
+To run you need a computer with Vagrant and Virtualbox installed. This project have been tested on a MacBook Pro with OS X Yosemite and a Lenovo Yoga with Windows 10. 
 
 Here follows the steps:
 
