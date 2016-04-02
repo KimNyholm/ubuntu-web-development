@@ -10,4 +10,7 @@ Vagrant.configure(2) do |config|
   # Boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
 
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+  end
 end
