@@ -30,10 +30,10 @@ If you want to modify the setup according to your own needs, look into the scrip
 
 Wait until installation is done (approximately 10 minutes). On your host browse to http://ubuntu.dev. You are now able to work with 4 different Drupal versions and the latest Wordpress release
 
-- Recommended Drupal 7 stable release, http://ubuntu.dev/drupal-7
-- Development Drupal 7 current release, http://ubuntu.dev/drupal-7.x
-- Recommended Drupal 8 stable release, http://ubuntu.dev/drupal-8
-- Development Drupal 8 current release, http://ubuntu.dev/drupal-8.0.x
+- Recommended Drupal 7 stable release, http://ubuntu.dev/d7
+- Development Drupal 7 current dev release, http://ubuntu.dev/devd7
+- Recommended Drupal 8 stable release, http://ubuntu.dev/d8
+- Development Drupal 8 current dev release, http://ubuntu.dev/devd8
 - Wordpress, latest release, http://ubuntu.dev/wordpress
 
 More documentation can be found at http://kimnyholm.com.
