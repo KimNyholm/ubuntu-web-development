@@ -30,6 +30,9 @@ sudo cp ../index.html    /var/www/html
 sudo apt-get --yes install php5-imap
 sudo php5enmod imap
 
+#Install php curl extensions.
+sudo apt-get --yes install php5-curl
+
 #Enable rewrites.
 sudo a2enmod rewrite
 
