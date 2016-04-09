@@ -12,7 +12,7 @@ pushd /var/www/html/
 if [ "'$1'" == "'dev'" ] ; then
   # when it is the dev release we want Git control
   git clone --branch $dv http://git.drupal.org/project/drupal.git
-  mv drupal drupal-$dv
+  mv drupal $sitename
 else
   drush dl drupal-$dv --drupal-project-rename=$sitename --yes
 fi
