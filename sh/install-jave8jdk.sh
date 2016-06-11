@@ -1,14 +1,15 @@
 #!/bin/bash
 
 #Install repository
-sudo add-apt-repository ppa:webupd8team/java
+sudo add-apt-repository ppa:webupd8team/java --yes
 sudo apt-get update
 
 #install java 8 jdk
-sudo apt-get install oracle-java8-installer
+sudo debconf-set-selections <<<'debconf shared/accepted-oracle-license-v1-1 select true'
+sudo apt-get --yes install oracle-java8-installer
 
 #add JAVA_HOME to environment
 echo JAVA_HOME=/usr | sudo tee -a /etc/environment
 
 #get MAVEN 3
-sudo apt-get install maven
+sudo apt-get --yes install maven

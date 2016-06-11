@@ -35,3 +35,6 @@ sudo apt-get --yes install nodejs npm
 
 #Restart apache.
 sudo service apache2 restart
+
+#Install java
+./install-java8jdk.sh
