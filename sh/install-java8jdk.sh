@@ -8,8 +8,10 @@ sudo apt-get update
 sudo debconf-set-selections <<<'debconf shared/accepted-oracle-license-v1-1 select true'
 sudo apt-get --yes install oracle-java8-installer
 
-#add JAVA_HOME to environment
-echo JAVA_HOME=/usr | sudo tee -a /etc/environment
+#Add JAVA_HOME to environment. Even though it is set in top level
+#we migth use this script on its own.
+export JAVA_HOME=/usr
+echo JAVA_HOME=$JAVA_HOME | sudo tee -a /etc/environment
 
 #get MAVEN 3
 sudo apt-get --yes install maven
