@@ -25,6 +25,15 @@ function EmailConnect($host, $user, $password){
   return $inbox;
 }
 
+function fetchImageInfo($mailbox, $emailNumber, $partNo){
+  $mime=imap_fetchmime($mailbox, $emailNumber, $partNo, (FT_PEEK));
+  $mime1=explode(":", $mime);
+  $filename=trim($mime1[5]);
+  $id=explode("\n", $mime1[4]);
+  $info=array('id'=>trim($id[0]), 'filename' => $filename);
+  return $info;
+}
+
 // Based upon http://php.net/manual/en/function.imap-fetchstructure.php.
 function EmailGetPart($mailbox, $emailNumber, $part, $partNo, $result){
   $parameter = array();
@@ -35,6 +44,7 @@ function EmailGetPart($mailbox, $emailNumber, $part, $partNo, $result){
   $data = ($partNo) ? imap_fetchbody($mailbox,$emailNumber,$partNo) : imap_body($mailbox, $emailNumber);
   // Any part may be encoded, even plain text messages, so check everything.
   $encoding = $part->encoding ;
+  $type=$part->type;
   if ($encoding==ENCQUOTEDPRINTABLE){
       $data = quoted_printable_decode($data);
   } elseif ($encoding==ENCBASE64) {
@@ -60,26 +70,31 @@ function EmailGetPart($mailbox, $emailNumber, $part, $partNo, $result){
     $filename = ($parameter['filename'])? $parameter['filename'] : $parameter['name'];
     $filename=iconv_mime_decode($filename, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF8');
     $id = isset($part->id) ? $part->id : '' ;
-    $attachments[] = array('filename' => $filename, 'part' => $partNo, 'data' => $data, 'id' => $id);
+    $attachments[] = array('inline' => false, 'filename' => $filename, 'part' => $partNo, 'data' => $data, 'id' => $id);
   }
-   // TEXT
-  if ($part->type==TYPETEXT && $data) {
-    // Messages may be split in different parts because of inline attachments,
-    // so append parts together with blank row.
-    if (strtolower($part->subtype)=='plain') {
-        $plainText.= trim($data) ."\n\n";
-    } else {
-        $htmlText.= $data ."<br><br>";
+  if ($type==TYPEIMAGE){
+    $info=fetchImageInfo($mailbox, $emailNumber, $partNo);
+    $attachments[] = array('inline' => true, 'filename' => $info['filename'], 'part' => $partNo, 'data' => $data, 'id' => $info['id']);
+  }
+  if (!empty($data)){
+    if ($type==TYPETEXT) {
+      // Messages may be split in different parts because of inline attachments,
+      // so append parts together with blank row.
+      if (strtolower($part->subtype)=='plain') {
+          $plainText.= trim($data) ."\n\n";
+      } else {
+          $htmlText.= $data ."<br><br>";
+      }
+      // assume all parts are same charset
+      $result->charset = $parameter['charset'];
+    } elseif ($type==TYPEMESSAGE) {
+      // EMBEDDED MESSAGE
+      // Many bounce notifications embed the original message as type 2,
+      // but AOL uses type 1 (multipart), which is not handled here.
+      // There are no PHP functions to parse embedded messages,
+      // so this just appends the raw source to the main message.
+          $plainText.= $data."\n\n";
     }
-    // assume all parts are same charset
-    $result->charset = $parameter['charset'];
-  } elseif ($part->type==TYPEMESSAGE && $data) {
-    // EMBEDDED MESSAGE
-    // Many bounce notifications embed the original message as type 2,
-    // but AOL uses type 1 (multipart), which is not handled here.
-    // There are no PHP functions to parse embedded messages,
-    // so this just appends the raw source to the main message.
-        $plainmsg.= $data."\n\n";
   }
   // SUBPART RECURSION
   $result->attachments = array_merge($result->attachments, $attachments);
@@ -171,7 +186,9 @@ function EmailAttachmentsSave(&$mail){
     $saved = $dirExists && file_put_contents($tmpName, $attachment['data']);
     $tmpName=htmlentities($tmpName);
     $fileName=htmlentities($fileName);
-    $html .= '<span><a href="' . $tmpName . '">' . $fileName . '</a> </span>';
+    if (!$attachment['inline']){
+      $html .= '<span><a href="' . $tmpName . '">' . $fileName . '</a> </span>';
+    }
     $cid =$attachment['id'];
     if (isset($cid)){
       $mail->htmlText=EmailEmbeddedLinkReplace($mail->htmlText,$cid,$tmpName);
