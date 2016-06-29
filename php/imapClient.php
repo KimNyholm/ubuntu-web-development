@@ -25,12 +25,52 @@ function EmailConnect($host, $user, $password){
   return $inbox;
 }
 
+function trimArray($values){
+  $trimmed=array();
+  foreach ($values as $value){
+    $trimmed[]=trim($value);
+  }
+  return $trimmed;
+}
+
+function extractField($fieldName, $values){
+  $index=array_search($fieldName, $values);
+  $id=($index === FALSE) ? "" : $values[$index+1];
+  return $id ;
+}
+
+function extractValue($prefix, $values){
+  $result="";
+  foreach ($values as $value){
+    if (0===strpos($value, $prefix)){
+      $result=substr($value, strlen($prefix)+2,-1);
+      continue;
+    }
+  }
+  return $result;
+}
+
+function extractMimeFileName($values){
+  $filename=extractField("X-Attachment-Id:", $values);
+  if (empty($filename)){
+    $filename=extractValue("filename", $values);
+  }
+  if (empty($filename)){
+    $filename=extractValue("name", $values);
+  }
+  if (empty($filename)){
+    $filename="unknown";
+  }
+  return $filename ;
+}
+
 function fetchImageInfo($mailbox, $emailNumber, $partNo){
   $mime=imap_fetchmime($mailbox, $emailNumber, $partNo, (FT_PEEK));
-  $mime1=explode(":", $mime);
-  $filename=trim($mime1[5]);
-  $id=explode("\n", $mime1[4]);
-  $info=array('id'=>trim($id[0]), 'filename' => $filename);
+  $mime= preg_split('/\s+/', $mime);
+  $mime=trimArray($mime);
+  $id=extractField("Content-ID:", $mime);
+  $filename=extractMimeFileName($mime);
+  $info=array('id'=>$id, 'filename' => $filename);
   return $info;
 }
 
