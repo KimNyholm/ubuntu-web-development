@@ -1,5 +1,5 @@
 # ubuntu-web-development
-This project is yet another implementation of a vagrant/virtualbox/ubuntu/drupal/wordpress envirionment. Ubuntu version is Ubuntu 14.04 LTS Trusty Tahr.
+This project is yet another implementation of a vagrant/virtualbox/ubuntu/drupal/wordpress envirionment. Ubuntu version is Ubuntu 16.04 LTS Xenial Xerus.
 
 It is implemented, so that you can choose to do the installation of Ubuntu packages, Drupal and Wordpress
 in step 8 below manually, which is usefull if you want to adapt the setup to some specific needs.
@@ -9,7 +9,7 @@ To run you need a computer with Vagrant and Virtualbox installed. This project h
 Here follows the steps:
 
 1. Start a terminal on your host.
-2. If you have the pluging vagrant-hostsupdater installed you can skip this step.<br>
+2. If you have the pluging vagrant-hostsupdater installed you can skip this step 2.<br>
 Tell your host about the ip address of the guest virtual machine, by adding the line below to */etc/hosts*.<br>
 <code>192.168.33.11  ubuntu.dev</code>
 3. Make a working directory and step into this. The name of the directory is not important<br>
