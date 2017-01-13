@@ -30,9 +30,6 @@ sudo apt-get --yes install nodejs npm
 #Install Xdebug.
 ./install-xdebug.sh
 
-#Install XHProf.
-./install-xhprof.sh
-
 #Restart apache.
 sudo service apache2 restart
 
