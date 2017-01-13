@@ -6,7 +6,7 @@ create database wordpress;
 CREATE
 
 #Install helpers for wordpress
-sudo apt-get install php5-gd libssh2-php
+sudo apt-get install php-gd libssh2-php
 
 pushd /var/www/html
 wget http://wordpress.org/latest.tar.gz

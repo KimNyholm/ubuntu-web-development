@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Install and configure xdebug.
-sudo apt-get --yes install php5-xdebug
-sudo tee /etc/php5/mods-available/xdebug.ini <<CONFIG
+sudo apt-get --yes install php-xdebug
+sudo tee /etc/php/7.0/mods-available/xdebug.ini <<CONFIG
 [xdebug]
 xdebug.remote_enable=1
 xdebug.max_nesting_level=300

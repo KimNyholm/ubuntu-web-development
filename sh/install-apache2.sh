@@ -14,11 +14,11 @@ echo '</VirtualHost>'  >>/tmp/000-default.conf
 sudo cp /tmp/000-default.conf /etc/apache2/sites-available
 
 #update php.ini
-grep -v -i "display_errors = Off" /etc/php5/apache2/php.ini >/tmp/php.ini.tmp
+grep -v -i "display_errors = Off" /etc/php/7.0/apache2/php.ini >/tmp/php.ini.tmp
 grep -v -i "display_startup_errors = Off" /tmp/php.ini.tmp >/tmp/php.ini
 echo 'display_errors = On' >> /tmp/php.ini
 echo 'display_startup_errors = On' >> /tmp/php.ini
-sudo cp /tmp/php.ini /etc/php5/apache2/php.ini
+sudo cp /tmp/php.ini /etc/php/7.0/apache2/php.ini
 
 #Preprare html directory for use with some test files.
 sudo chmod 777 /var/www/html
@@ -27,11 +27,11 @@ cp ../php/phpinfo.php    /var/www/html
 sudo cp ../index.html    /var/www/html
 
 #Install php imap extensions.
-sudo apt-get --yes install php5-imap
-sudo php5enmod imap
+sudo apt-get --yes install php-imap
+sudo phpenmod imap
 
 #Install php curl extensions.
-sudo apt-get --yes install php5-curl
+sudo apt-get --yes install php-curl
 
 #Enable rewrites.
 sudo a2enmod rewrite
