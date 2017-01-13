@@ -18,7 +18,7 @@ else
 fi
 
 cd $sitename
-drush site-install standard --db-url="mysql://ada:Lovelace@localhost/$sitename" --site-name="Drupal $dv site $sitename on Trusty" --account-name=ada --account-pass=Lovelace --yes
+drush site-install standard --db-url="mysql://ada:Lovelace@localhost/$sitename" --site-name="Drupal $dv site $sitename on Ubuntu" --account-name=ada --account-pass=Lovelace --yes
 sudo chmod -R 777 sites/default/files
 sudo chown -R :www-data *
 popd
