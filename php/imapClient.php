@@ -108,7 +108,7 @@ function EmailGetPart($mailbox, $emailNumber, $part, $partNo, $result){
   // so an attached text file (type 0) is not mistaken as the message.
   if(isset($parameter['filename']) || isset($parameter['name'])) {
     $filename = ($parameter['filename'])? $parameter['filename'] : $parameter['name'];
-    $filename=iconv_mime_decode($filename, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF8');
+    $filename=iconv_mime_decode($filename, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
     $id = isset($part->id) ? $part->id : '' ;
     $attachments[] = array('inline' => false, 'filename' => $filename, 'part' => $partNo, 'data' => $data, 'id' => $id);
   }
@@ -159,7 +159,7 @@ function EmailGetParts($mailbox, $emailNumber, $parts, $partNo, $result){
 function DecodeMailHeader($headerInfo, $fieldName){
   $value='';
   if (isset($headerInfo->$fieldName)){
-    $value=iconv_mime_decode($headerInfo->$fieldName, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF8');
+    $value=iconv_mime_decode($headerInfo->$fieldName, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
   }
   return $value ;
 }
@@ -185,8 +185,8 @@ function EmailGetOne($mailbox, $email_number){
   $headerInfo->subject = DecodeMailHeader($headerInfo, 'subject') ;
   $mail->headerInfo=$headerInfo;
 
-  $mail->plainText = iconv($mail->charset, 'UTF8', $mail->plainText);
-  $mail->htmlText  = iconv($mail->charset, 'UTF8', $mail->htmlText);
+  $mail->plainText = iconv($mail->charset, 'UTF-8', $mail->plainText);
+  $mail->htmlText  = iconv($mail->charset, 'UTF-8', $mail->htmlText);
   if (empty($mail->htmlText)){
     $mail->htmlText='<p>'.$mail->plainText.'</p>';
   }
