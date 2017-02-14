@@ -171,7 +171,7 @@ function EmailGetOne($mailbox, $email_number){
   $mail->plainText   = '';
   $mail->htmlText    = '';
   $mail->charset     = 'auto';
-  if (empty($tructure->parts)){
+  if (empty($structure->parts)){
     // Simple message.
     $mail = EmailGetPart($mailbox, $email_number, $structure, 0, $mail);
   } else {
