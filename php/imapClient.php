@@ -184,9 +184,9 @@ function EmailGetOne($mailbox, $email_number){
   $headerInfo->ccaddress = DecodeMailHeader($headerInfo, 'ccaddress') ;
   $headerInfo->subject = DecodeMailHeader($headerInfo, 'subject') ;
   $mail->headerInfo=$headerInfo;
-
-  $mail->plainText = iconv($mail->charset, 'UTF-8', $mail->plainText);
-  $mail->htmlText  = iconv($mail->charset, 'UTF-8', $mail->htmlText);
+  ini_set('mbstring.substitute_character', 'none'); //32 to substitute a space, "none" to remove
+  $mail->plainText = mb_convert_encoding($mail->plainText , 'UTF-8', $mail->charset);
+  $mail->htmlText  = mb_convert_encoding($mail->htmlText, 'UTF-8', $mail->charset);
   if (empty($mail->htmlText)){
     $mail->htmlText='<p>'.$mail->plainText.'</p>';
   }
