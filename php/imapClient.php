@@ -116,7 +116,7 @@ function EmailGetPart($mailbox, $emailNumber, $part, $partNo, $result){
     $info=fetchImageInfo($mailbox, $emailNumber, $partNo);
     $attachments[] = array('inline' => true, 'filename' => $info['filename'], 'part' => $partNo, 'data' => $data, 'id' => $info['id']);
   }
-  if (!empty($data)){
+  if ((!empty($data)) && empty($filename)){
     if ($type==TYPETEXT) {
       // Messages may be split in different parts because of inline attachments,
       // so append parts together with blank row.
