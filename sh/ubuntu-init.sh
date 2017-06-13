@@ -8,7 +8,7 @@ sudo chpasswd <<< 'ada:Lovelace'
 sudo apt-get update
 
 #Install zip and git.
-sudo apt-get --yes install p7zip-full
+sudo apt-get --yes install zip unzip php7.0-zip
 sudo apt-get --yes install git
 git config --global core.autocrlf input
 
