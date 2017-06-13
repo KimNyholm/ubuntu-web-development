@@ -27,8 +27,9 @@ sudo apt-get --yes install nodejs npm
 #install postfix mail
 ./install-postfix.sh
 
-#Install Xdebug.
-./install-xdebug.sh
+#Test file to show performance of php.
+cp ../php/performance.php /var/www/html
+
 
 #Restart apache.
 sudo service apache2 restart
