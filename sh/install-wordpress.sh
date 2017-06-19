@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #prepare database for Wordpress
-mysql -u root -pLovelace <<CREATE
+mysql -u root -p$USERPW <<CREATE
 create database wordpress;
 CREATE
 

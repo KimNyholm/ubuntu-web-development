@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Configure the Drupal user.
-sudo useradd ada -m -G www-data -s /bin/bash
-sudo chpasswd <<< 'ada:Lovelace'
+sudo useradd $USERID -m -G www-data -s /bin/bash
+sudo chpasswd <<< "$USERID:$USERPW"
 
 #Ensure we get newest packages.
 sudo apt-get update

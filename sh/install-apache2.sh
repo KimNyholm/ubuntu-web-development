@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#Install LAMP stack, we set Lovelace as root password.
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password Lovelace'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password Lovelace'
+#Install LAMP stack
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $USERPW"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $USERPW"
 sudo apt-get --yes install lamp-server^
 
 #update 000-default.conf
@@ -36,10 +36,10 @@ sudo apt-get --yes install php-curl
 #Enable rewrites.
 sudo a2enmod rewrite
 
-#Install phpmyadmin, we set Lovelace as password.
+#Install phpmyadmin
 sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/dbconfig-install boolean true'
-sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/app-password-confirm password Lovelace'
-sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/admin-pass password Lovelace'
-sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/app-pass password Lovelace'
+sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $USERPW"
+sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password $USERPW"
+sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password $USERPW"
 sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'
 sudo apt-get --yes install phpmyadmin

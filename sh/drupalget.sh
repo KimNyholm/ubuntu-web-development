@@ -3,9 +3,9 @@
 SHELL_PATH="`dirname \"$0\"`"
 
 #prepare database user for Drupal
-mysql -u root -pLovelace <<CREATE_USER
-create user 'ada'@'localhost' identified by 'Lovelace';
-grant all privileges on * . * to 'ada'@'localhost';
+mysql -u root -p$USERPW <<CREATE_USER
+create user '$USERID'@'localhost' identified by '$USERPW';
+grant all privileges on * . * to '$USERID'@'localhost';
 flush privileges;
 CREATE_USER
 
