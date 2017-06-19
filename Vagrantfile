@@ -12,7 +12,6 @@ Vagrant.configure(2) do |config|
   config.vm.box = "bento/ubuntu-16.04"
 
   config.vm.provider "virtualbox" do |v|
-    v.name = "vm_name_me"
     v.memory = 1024
   end
 end
