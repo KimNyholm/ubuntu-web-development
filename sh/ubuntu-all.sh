@@ -2,8 +2,8 @@
 
 SHELL_PATH="`dirname \"$0\"`"
 
-export USERID=${$1:ada}
-export USERPW=${$2:Lovelace}
+export USERID=${1:ada}
+export USERPW=${2:Lovelace}
 
 #Ensure locale is right for this session, vagrant ssh transfers host value.
 export LC_CTYPE="en_US.UTF-8"
