@@ -21,7 +21,8 @@ cat <<OPTIONS >>/tmp/vsftpdB.tmp
 pasv_enable=YES
 pasv_min_port=1024
 pasv_max_port=1048
-pasv_addr_resolve=$1
+pasv_address=$1
+pasv_addr_resolve=YES
 port_enable=YES
 OPTIONS
   fi
