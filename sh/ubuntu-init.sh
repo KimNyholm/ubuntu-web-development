@@ -16,7 +16,7 @@ git config --global core.autocrlf input
 ./install-vim.sh
 
 #Install ftp server.
-./install-vsftpd.sh
+./install-vsftpd.sh $1
 
 #Install Node.js.
 sudo apt-get --yes install nodejs npm

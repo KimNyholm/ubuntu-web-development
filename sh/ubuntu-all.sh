@@ -14,7 +14,7 @@ sudo tee -a /etc/default/locale <<< LC_CTYPE=$LC_CTYPE
 export JAVA_HOME=/usr
 
 pushd $SHELL_PATH
-./ubuntu-init.sh
+./ubuntu-init.sh $3
 ./install-drush.sh
 ./drupalget.sh
 ./install-wordpress.sh
