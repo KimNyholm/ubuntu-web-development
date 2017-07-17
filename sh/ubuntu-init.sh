@@ -19,7 +19,7 @@ git config --global core.autocrlf input
 ./install-vsftpd.sh $1
 
 #Install Node.js.
-sudo apt-get --yes install nodejs npm
+./install-nodejs.sh
 
 #Install LAMP stack and phpmyadmin.
 ./install-apache2.sh
