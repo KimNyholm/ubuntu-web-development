@@ -11,7 +11,7 @@ Here follows the steps:
 1. Start a terminal on your host.
 2. If you have the pluging vagrant-hostsupdater installed you can skip this step 2.<br>
 Tell your host about the ip address of the guest virtual machine, by adding the line below to */etc/hosts*.<br>
-<code>192.168.33.11  ubuntu.dev</code>
+<code>192.168.33.11  ubuntu.test</code>
 3. Make a working directory and step into this. The name of the directory is not important<br>
 <code>mkdir work</code><br>
 <code>cd work</code>
@@ -28,12 +28,12 @@ Install Ubuntu packages, Drupal and Wordpress<br>
 <code>/vagrant/sh/ubuntu-all.sh</code><br>
 If you want to modify the setup according to your own needs, look into the script and modify.
 
-Wait until installation is done (approximately 10 minutes). On your host browse to http://ubuntu.dev. You are now able to work with 4 different Drupal versions and the latest Wordpress release
+Wait until installation is done (approximately 10 minutes). On your host browse to http://ubuntu.test. You are now able to work with 4 different Drupal versions and the latest Wordpress release
 
-- Recommended Drupal 7 stable release, http://ubuntu.dev/d7
-- Development Drupal 7 current dev release, http://ubuntu.dev/devd7
-- Recommended Drupal 8 stable release, http://ubuntu.dev/d8
-- Development Drupal 8 current dev release, http://ubuntu.dev/devd8
-- Wordpress, latest release, http://ubuntu.dev/wordpress
+- Recommended Drupal 7 stable release, http://ubuntu.test/d7
+- Development Drupal 7 current dev release, http://ubuntu.test/devd7
+- Recommended Drupal 8 stable release, http://ubuntu.test/d8
+- Development Drupal 8 current dev release, http://ubuntu.test/devd8
+- Wordpress, latest release, http://ubuntu.test/wordpress
 
 More documentation can be found at http://kimnyholm.com.

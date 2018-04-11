@@ -5,7 +5,7 @@ Vagrant.configure(2) do |config|
 
   # And we setup an alias to the vm.
   config.vm.network :private_network, ip: "192.168.33.11"
-  config.vm.hostname = "ubuntu.dev"
+  config.vm.hostname = "ubuntu.test"
 
   # Boxes at https://atlas.hashicorp.com/search.
   #config.vm.box = "box-cutter/ubuntu1604-desktop"

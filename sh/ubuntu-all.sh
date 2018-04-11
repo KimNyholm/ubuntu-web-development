@@ -20,5 +20,5 @@ pushd $SHELL_PATH
 ./install-wordpress.sh
 popd
 
-echo Installation complete. On your host browse to http://ubuntu.dev
+echo Installation complete. On your host browse to http://ubuntu.test
 
